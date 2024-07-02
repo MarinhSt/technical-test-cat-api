@@ -1,35 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+const FACT_API_URL = 'https://catfact.ninja/fact'
 function App() {
-  const [count, setCount] = useState(0)
+    const [fact, setFact] = useState('')
+    const [newFact, setNewFact] = useState(false)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        fetch(FACT_API_URL)
+            .then(res => res.json())
+            .then(({ fact }) => setFact(fact))
+    }, [newFact])
+
+    return (
+        <>
+            <h1>Cat App</h1>
+            {fact && <p>{fact}</p>}
+            <button onClick={() => setNewFact(!newFact)}>Get new fact</button>
+        </>
+    )
 }
 
 export default App
